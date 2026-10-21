@@ -24,10 +24,10 @@ public class UserController {
         boolean isAuthenticated = userService.login(authRequest);
         if (isAuthenticated) {
             LoginResponse loginResponse = new LoginResponse(authRequest.getUsername());
-            return ResponseEntity.ok(new ApiResponse<>(loginResponse, "200", "success"));
+            return ResponseEntity.ok(new ApiResponse<>(loginResponse, 200, "success"));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ApiResponse<>(null, "401", "Invalid credentials"));
+                .body(new ApiResponse<>(null, 401, "Invalid credentials"));
     }
 
     @PostMapping("/create-user")
@@ -35,10 +35,10 @@ public class UserController {
     public ResponseEntity<ApiResponse<User>> createUser(@Valid @RequestBody UserReq userReq) {
         User user = userService.createUser(userReq);
         if (user != null) {
-            return ResponseEntity.ok(new ApiResponse<>(user, "200", "User created successfully"));
+            return ResponseEntity.ok(new ApiResponse<>(user, 200, "User created successfully"));
         }
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ApiResponse<>(null, "409", "User already exists"));
+                .body(new ApiResponse<>(null, 409, "User already exists"));
     }
 
     @PutMapping("/forgot-pwd/{email}")
@@ -48,9 +48,9 @@ public class UserController {
             @RequestParam String newPassword) {
         boolean updated = userService.forgotPassword(email, newPassword);
         if (updated) {
-            return ResponseEntity.ok(new ApiResponse<>("Password updated", "200", "success"));
+            return ResponseEntity.ok(new ApiResponse<>("Password updated", 200, "success"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiResponse<>(null, "404", "User not found"));
+                .body(new ApiResponse<>(null, 404, "User not found"));
     }
 }

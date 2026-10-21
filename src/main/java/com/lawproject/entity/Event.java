@@ -20,7 +20,7 @@ public class Event {
     @JsonProperty("eventType")
     private String eventType;
 
-    @Column(name = "event_subject", nullable = false, length = 100)
+    @Column(name = "event_subject", nullable = false, length = 255)
     @JsonProperty("subject")
     private String eventSubject;
 

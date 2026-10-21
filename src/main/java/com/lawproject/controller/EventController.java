@@ -26,17 +26,13 @@ public class EventController {
 
     @PostMapping("/create-event")
     @Operation(summary = "Create event", description = "Create a new event")
-    public ResponseEntity<ApiResponse<EventResponse>> createEvent(@RequestBody EventReq eventReq) {
-        try {
-            log.info("Create event request received: {}", eventReq);
-            Event event = eventService.createEvent(eventReq);
-            EventResponse response = convertToResponse(event);
-            return ResponseEntity.ok(new ApiResponse<>(response, 200, "success"));
-        } catch (Exception e) {
-            log.error("Error in create-event: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(null, 500, "Error: " + e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse<EventResponse>> createEvent(
+            @Valid @RequestBody EventReq eventReq) {
+
+        log.info("Create event request received: {}", eventReq);
+        Event event = eventService.createEvent(eventReq);
+        EventResponse response = convertToResponse(event);
+        return ResponseEntity.ok(new ApiResponse<>(response, 200, "success"));
     }
 
     @GetMapping("/event/{id}")
@@ -102,12 +98,10 @@ public class EventController {
     @PutMapping("/events/{id}")
     public ResponseEntity<ApiResponse<EventResponse>> updateEvent(
             @PathVariable Long id,
-            @Valid @RequestBody EventUpdateRequest request
-    ) {
+            @Valid @RequestBody EventUpdateRequest request) {
+
         Event updatedEvent = eventService.updateEvent(id, request);
-        return ResponseEntity.ok(
-                new ApiResponse<>(convertToResponse(updatedEvent), 200, "Updated")
-        );
+        return ResponseEntity.ok(new ApiResponse<>(convertToResponse(updatedEvent), 200, "Updated"));
     }
 
     private EventResponse convertToResponse(Event event) {
